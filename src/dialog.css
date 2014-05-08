@@ -1,0 +1,12 @@
+.dialog-mask{
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: .5;
+}
+.close{
+	cursor: pointer;
+	font-family: tahoma;
+	font-size: 17px;
+	float: right;
+}

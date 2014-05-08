@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Dialog</title>
+		<style type="text/css">
+			#dialog-1{
+				width: 100px;
+				height: 100px;
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="dialog-1"></div>
+		<script src="../js/jquery-1.8.3.min.js"></script>
+		<script src="../js/dragdrop.js"></script>
+		<script>
+			new Drap({
+			    id:"dialog-1",
+			    circlimit:false
+			}).enable();
+		</script>
+	</body>
+</html>
