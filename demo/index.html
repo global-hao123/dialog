@@ -57,7 +57,9 @@
 		<input type="radio" name="modalInput" id="modalInput0" value="0" checked="checked" />
 		<label for="modalInput0" style="width: 30px; text-align: left;">no</label>
 		<input type="radio" name="modalInput" id="modalInput1" value="1"/>
-		<label for="modalInput1" style="width: 30px; text-align: left;">yes</label>
+		<label for="modalInput1" style="width: 30px; text-align: left;">yes</label><br/>
+		<label for="classInput">class:</label>
+		<input type="text" id="classInput"/>
 		</p>
 		<p>
 		<strong>Trigger:</strong><br/>
@@ -72,16 +74,20 @@
 				var opt = {},
 					widthOpt = $("#widthInput").val(),
 					heightOpt = $("#heightInput").val(),
+					classOpt = $("#classInput").val(),
 					topOpt = $("#topInput").val(),
 					leftOpt = $("#leftInput").val(),
 					positionOpt = $("[name='positionInput']:checked").val(),
 					modalOpt = +$("[name='modalInput']:checked").val();
 				!!widthOpt && (opt.width = +widthOpt);
 				!!heightOpt && (opt.height = +heightOpt);
+				!!classOpt && (opt.customClass = classOpt);
 				!!topOpt && (opt.top = +topOpt);
 				!!leftOpt && (opt.left = +leftOpt);
 				!!positionOpt && (opt.position = positionOpt);
 				!!modalOpt && (opt.modal = modalOpt);
+				opt.debug = true;
+				// opt.customClass = "aaa";
 				return opt;
 			};
 

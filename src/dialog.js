@@ -5,6 +5,7 @@ var Dialog = function($el,opt){
 			height: 100,
 			position: "absolute",
 			modal: 0,
+			draggable: 1,
 			tpl: {
 				head: "<div class='head'><span>title</span><i class='close'>&times;</i></div>",
 				content: "<div class='content'>content</div>",
@@ -41,9 +42,9 @@ fn._modalise = function(){
 	if(Dialog.mask.is(":hidden")){
 		Dialog.mask.show();
 	}
-	// TODO 禁止滚动
-	$(document).on("scroll.dialog", function(e){console.log(1);
-		e.preventDefault();
+	// 禁止滚动
+	$("html,body").css({
+		"overflow": "hidden"
 	});
 };
 
@@ -70,7 +71,7 @@ fn._getElement = function($el){
 	    	if($("#" + dialogId).length){
 	    		arguments.callee();
 	    	}else{
-	    		var $newDialog = $("<div id='" + dialogId + "'>" + html + "</div>");
+	    		var $newDialog = $("<div id='" + dialogId + "'"+ (that.opt.customClass?"class='"+ that.opt.customClass +"'":"") + ">" + html + "</div>");
 	    		$newDialog.appendTo($("body"));
 	    		return $newDialog;
 	    	}
@@ -117,6 +118,24 @@ fn._draggable = function(){
 }
 
 /**
+ * show interface
+ *
+ * @param {Object} argument comment
+ */
+fn.show = function(){
+	var that = this;
+
+	if(that.opt.modal){
+		Dialog.mask.show();
+		// 恢复滚动
+		$("html,body").css({
+			"overflow": "hidden"
+		});
+	}
+	that.$el.show();
+};
+
+/**
  * close interface
  *
  * @param {Object} argument comment
@@ -126,7 +145,10 @@ fn.close = function(){
 
 	if(that.opt.modal){
 		Dialog.mask.hide();
-		$(document).off("scroll.dialog");
+		// 恢复滚动
+		$("html,body").css({
+			"overflow": "auto"
+		});
 	}
 	that.$el.hide();
 };
@@ -154,21 +176,20 @@ fn._init = function($el){
 		opt = that.opt;
 
 	// modal
-	if(opt.modal){
-		that._modalise();
-	}
+	opt.modal && that._modalise();
+
 	// get $el
 	that.$el = that._getElement($el);
     // adjust position
     that._adjustPos(opt);
 
     // TODO: (debug-only)random background color
-    opt.backgroundColor = "RGB(" + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + ")";
+    opt.debug && (opt.backgroundColor = "RGB(" + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + ")");
 
 	that.$el.css(opt);
 
 	// draggable
-	that._draggable();
+	opt.draggable && that._draggable();
 
 	// bind events
 	that._bindEvents(opt);
