@@ -1,5 +1,5 @@
 var Dialog = function($el,opt){
-    var that = this,
+    var self = this,
     	defaultOpt = {
 			width: 100,
 			height: 100,
@@ -14,9 +14,9 @@ var Dialog = function($el,opt){
 		};
 
     typeof opt == "function" && (opt = opt.call());
-    that.opt = $.extend(defaultOpt,opt);
+    self.opt = $.extend(defaultOpt,opt);
 
-    that._init($el);
+    self._init($el);
 };
 // class variables
 Dialog.counter = 0;
@@ -54,9 +54,9 @@ fn._modalise = function(){
  * @param {Object} argument comment
  */
 fn._getElement = function($el){
-	var that = this,
+	var self = this,
 		html = "";
-	$.each(that.opt.tpl, function(i,v){
+	$.each(self.opt.tpl, function(i,v){
 		html += v;
 	});
 	return (
@@ -71,7 +71,7 @@ fn._getElement = function($el){
 	    	if($("#" + dialogId).length){
 	    		arguments.callee();
 	    	}else{
-	    		var $newDialog = $("<div id='" + dialogId + "'"+ (that.opt.customClass?"class='"+ that.opt.customClass +"'":"") + ">" + html + "</div>");
+	    		var $newDialog = $("<div id='" + dialogId + "'"+ (self.opt.customClass?"class='"+ self.opt.customClass +"'":"") + ">" + html + "</div>");
 	    		$newDialog.appendTo($("body"));
 	    		return $newDialog;
 	    	}
@@ -85,7 +85,7 @@ fn._getElement = function($el){
  * @param {Object} argument comment
  */
 fn._adjustPos = function(opt){
-	var that = this;
+	var self = this;
 
 	// 默认在可视区域内居中
 	if(opt.top == undefined){
@@ -110,12 +110,21 @@ fn._adjustPos = function(opt){
  * @param {Object} argument comment
  */
 fn._draggable = function(){
-	var that = this;
+	var self = this;
 
-	that.$el.drag({
+	self.$el.drag({
 		circlimit: false
 	});
-}
+};
+
+/**
+ * unbind bindDrag event interface
+ *
+ * @param {Object} argument comment
+ */
+fn.unBindEvent = function(){
+	this.off(self.type, self.bindHandler);
+};
 
 /**
  * show interface
@@ -123,16 +132,16 @@ fn._draggable = function(){
  * @param {Object} argument comment
  */
 fn.show = function(){
-	var that = this;
+	var self = this;
 
-	if(that.opt.modal){
+	if(self.opt.modal){
 		Dialog.mask.show();
 		// 恢复滚动
 		$("html,body").css({
 			"overflow": "hidden"
 		});
 	}
-	that.$el.show();
+	self.$el.show();
 };
 
 /**
@@ -141,16 +150,26 @@ fn.show = function(){
  * @param {Object} argument comment
  */
 fn.close = function(){
-	var that = this;
+	var self = this;
 
-	if(that.opt.modal){
+	if(self.opt.modal){
 		Dialog.mask.hide();
 		// 恢复滚动
 		$("html,body").css({
 			"overflow": "auto"
 		});
 	}
-	that.$el.hide();
+	self.$el.hide();
+};
+
+/**
+ * destroy interface
+ *
+ * @param {Object} argument comment
+ */
+fn.destroy = function(){
+	var self = this;
+	this.$el.remove();
 };
 
 /**
@@ -159,10 +178,10 @@ fn.close = function(){
  * @param {Object} argument comment
  */
 fn._bindEvents = function(opt){
-	var that = this;
+	var self = this;
 
-	that.$el.on("click", ".close", function(){
-		that.close();
+	self.$el.on("click", ".close", function(){
+		self.close();
 	});
 };
 
@@ -172,27 +191,30 @@ fn._bindEvents = function(opt){
  * @param {Object} argument comment
  */
 fn._init = function($el){
-	var that = this,
-		opt = that.opt;
+	var self = this,
+		opt = self.opt;
 
 	// modal
-	opt.modal && that._modalise();
+	opt.modal && self._modalise();
 
 	// get $el
-	that.$el = that._getElement($el);
+	self.$el = self._getElement($el);
     // adjust position
-    that._adjustPos(opt);
+    self._adjustPos(opt);
 
     // TODO: (debug-only)random background color
     opt.debug && (opt.backgroundColor = "RGB(" + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + ")");
 
-	that.$el.css(opt);
+	self.$el.css(opt);
 
 	// draggable
-	opt.draggable && that._draggable();
+	opt.draggable && self._draggable();
 
 	// bind events
-	that._bindEvents(opt);
+	self._bindEvents(opt);
+
+	// bind complete callback
+	// opt.onComplete && opt.onComplete.call(self);
 };
 
 // jQuery plugin wraper
@@ -212,8 +234,12 @@ $.fn.extend({
      * @param {Object} argument comment
      */
     bindDialog: function(type,args) {
-    	this.on(type, function(){
+    	var self = this;
+    	self.type = type;
+    	self.bindHandler = function(e){
+    		e.preventDefault();
     		return new Dialog(null, args);
-    	})
+    	};
+    	self.on(type, self.bindHandler);
     }
 });

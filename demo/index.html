@@ -64,6 +64,7 @@
 		<p>
 		<strong>Trigger:</strong><br/>
 		<button id="initBtn">init a dialog</button>
+		<a id="initLink" href="#">init a dialog</button>
 		</p>
 		<div id="dialog-1"></div>
 		<script src="js/jquery-1.8.3.min.js"></script>
@@ -79,12 +80,13 @@
 					leftOpt = $("#leftInput").val(),
 					positionOpt = $("[name='positionInput']:checked").val(),
 					modalOpt = +$("[name='modalInput']:checked").val();
-				!!widthOpt && (opt.width = +widthOpt);
-				!!heightOpt && (opt.height = +heightOpt);
+				opt.styles = {};
+				!!widthOpt && (opt.styles.width = +widthOpt);
+				!!heightOpt && (opt.styles.height = +heightOpt);
 				!!classOpt && (opt.customClass = classOpt);
-				!!topOpt && (opt.top = +topOpt);
-				!!leftOpt && (opt.left = +leftOpt);
-				!!positionOpt && (opt.position = positionOpt);
+				!!topOpt && (opt.styles.top = +topOpt);
+				!!leftOpt && (opt.styles.left = +leftOpt);
+				!!positionOpt && (opt.styles.position = positionOpt);
 				!!modalOpt && (opt.modal = modalOpt);
 				opt.debug = true;
 				// opt.customClass = "aaa";
@@ -93,6 +95,15 @@
 
 
 			$("#initBtn").bindDialog("click", getOpt);
+			$("#initLink").bindDialog("click", $.extend(getOpt(), {
+				/*onComplete: function(){
+					var self = this;
+					setTimeout(function(){
+						self.destroy();
+						console.log("i'm destoried");
+					}, 2000);
+				}*/
+			}));
 			$("#dialog-1").dialog(getOpt());
 
 		</script>
