@@ -1,6 +1,6 @@
 ## dialog
 
-I'm just a dialog. That's all.
+I'm just a dialog, that's all.
 
 ## Compatibility
 
@@ -52,7 +52,7 @@ Chrome 1+ / Firefox 10+ / Opera 9+ / IE 8+
 | position     | `String` | "absolute" | dialog定位方式 |
 | modal     | `Number` | 0 | 是否是模态 |
 | draggable     | `Number` | 1 | 是否可以拖动 |
-| tpl    | `Object` | {	head: "<div class='head'><span>title</span><i class='close'>&times;</i></div>",	content: "<div class='content'>content</div>", foot: "<div class='foot'>footer</div>" } | 头部、内容区、尾部分别对应的tpl |
+| tpl    | `Object` | {	head: headTplStr,	content: contentTplStr, foot: footTplStr } | 头部、内容区、尾部分别对应的tpl |
 | initOnce    | `Number` | 0 | 使用事件触发方式初始化时控制是只初始化一次还是每次触发都初始化一个新的dialog对象 |
 | onComplete    | `Function` | - | 初始化结束时可以使用的回调 |
 | debug    | `Number` | 1 | 是否是调试，可以给每个dialog对象一个随机背景色方便区分 |
