@@ -8,7 +8,7 @@ Chrome 1+ / Firefox 10+ / Opera 9+ / IE 8+
 
 ## Feature
 
-- feature 1
+- TODO ...
 
 ## Usage
 
@@ -50,6 +50,8 @@ Chrome 1+ / Firefox 10+ / Opera 9+ / IE 8+
 | width     | `Number` | 100 | dialog宽度 |
 | height     | `Number` | 100 | dialog高度 |
 | position     | `String` | "absolute" | dialog定位方式 |
+| top     | `Number` | - | dialog垂直位置，默认居中 |
+| left     | `Number` | - | dialog水平位置，默认居中 |
 | modal     | `Number` | 0 | 是否是模态 |
 | draggable     | `Number` | 1 | 是否可以拖动 |
 | tpl    | `Object` | {	head: headTplStr,	content: contentTplStr, foot: footTplStr } | 头部、内容区、尾部分别对应的tpl |
