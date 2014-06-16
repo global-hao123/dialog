@@ -6,6 +6,7 @@ var Dialog = function($el,opt){
 			position: "absolute",
 			modal: 0,
 			draggable: 1,
+			initOnce: 0,
 			tpl: {
 				head: "<div class='head'><span>title</span><i class='close'>&times;</i></div>",
 				content: "<div class='content'>content</div>",
@@ -118,15 +119,6 @@ fn._draggable = function(){
 };
 
 /**
- * unbind bindDrag event interface
- *
- * @param {Object} argument comment
- */
-fn.unBindEvent = function(){
-	this.off(self.type, self.bindHandler);
-};
-
-/**
  * show interface
  *
  * @param {Object} argument comment
@@ -185,6 +177,15 @@ fn._bindEvents = function(opt){
 	});
 };
 
+fn._initStyle = function(opt){
+	var STYLES = ["width", "height", "position", "top", "left", "margin-top", "margin-left", "backgroundColor"],
+    	styleOpt = {};
+    $.each(STYLES, function(k, v) {
+    	styleOpt[v] = opt[v];
+    });
+	this.$el.css(styleOpt);
+};
+
 /**
  * init
  *
@@ -202,10 +203,11 @@ fn._init = function($el){
     // adjust position
     self._adjustPos(opt);
 
-    // TODO: (debug-only)random background color
+    // (debug-only)random background color
     opt.debug && (opt.backgroundColor = "RGB(" + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + ")");
 
-	self.$el.css(opt);
+    // init dialog styles
+    self._initStyle(opt);
 
 	// draggable
 	opt.draggable && self._draggable();
@@ -214,7 +216,7 @@ fn._init = function($el){
 	self._bindEvents(opt);
 
 	// bind complete callback
-	// opt.onComplete && opt.onComplete.call(self);
+	opt.onComplete && opt.onComplete.call(self);
 };
 
 // jQuery plugin wraper
@@ -235,11 +237,25 @@ $.fn.extend({
      */
     bindDialog: function(type,args) {
     	var self = this;
-    	self.type = type;
-    	self.bindHandler = function(e){
+    	self.on(type+".dialog", function(e){
     		e.preventDefault();
-    		return new Dialog(null, args);
-    	};
-    	self.on(type, self.bindHandler);
-    }
+    		if(args.initOnce && self.data("dialogObj")){
+    			self.data("dialogObj").show();
+    		}else{
+    			self.data({
+    				"etype": type+".dialog",
+    				"dialogObj": new Dialog(null, args)
+    			});
+    		}
+    	});
+    },
+
+	/**
+	 * unbind bindDrag event interface
+	 *
+	 * @param {Object} argument comment
+	 */
+	unBindDialog: function(){
+		this.off(self.data("etype"));
+	}
 });
