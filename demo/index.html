@@ -104,7 +104,10 @@
 					}, 2000);*/
 				}
 			}));
-			$("#dialog-1").dialog(getOpt());
+			var testDialog = $("#dialog-1").dialog($.extend(getOpt(),{
+				display: "none"
+			}));
+			testDialog.show(1000).close(1000).show(1000);
 
 		</script>
 	</body>

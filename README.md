@@ -50,6 +50,7 @@ Chrome 1+ / Firefox 10+ / Opera 9+ / IE 8+
 | width     | `Number` | 100 | dialog宽度 |
 | height     | `Number` | 100 | dialog高度 |
 | position     | `String` | "absolute" | dialog定位方式 |
+| display     | `String` | - | dialog初始化时是否显示，默认为显示 |
 | top     | `Number` | - | dialog垂直位置，默认居中 |
 | left     | `Number` | - | dialog水平位置，默认居中 |
 | modal     | `Number` | 0 | 是否是模态 |
@@ -68,7 +69,7 @@ Chrome 1+ / Firefox 10+ / Opera 9+ / IE 8+
 
 | 函数名        | 参数 | 描述 |
 | ------------- |:--------:| -----:|
-| show     | - | 显示dialog |
-| close     | - | 关闭（隐藏）dialog |
+| show     | speed | 显示dialog |
+| close     | speed | 关闭（隐藏）dialog |
 | destroy     | - | 销毁dialog |
 | unBindDialog     | - | 提供显式解除绑定触发初始化事件的方法

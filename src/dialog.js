@@ -4,6 +4,7 @@ var Dialog = function($el,opt){
 			width: 100,
 			height: 100,
 			position: "absolute",
+			// display: "block",
 			modal: 0,
 			draggable: 1,
 			initOnce: 0,
@@ -123,7 +124,7 @@ fn._draggable = function(){
  *
  * @param {Object} argument comment
  */
-fn.show = function(){
+fn.show = function(speed){
 	var self = this;
 
 	if(self.opt.modal){
@@ -133,7 +134,8 @@ fn.show = function(){
 			"overflow": "hidden"
 		});
 	}
-	self.$el.show();
+	self.$el.show(speed);
+	return self;
 };
 
 /**
@@ -141,7 +143,7 @@ fn.show = function(){
  *
  * @param {Object} argument comment
  */
-fn.close = function(){
+fn.close = function(speed){
 	var self = this;
 
 	if(self.opt.modal){
@@ -151,7 +153,8 @@ fn.close = function(){
 			"overflow": "auto"
 		});
 	}
-	self.$el.hide();
+	self.$el.hide(speed);
+	return self;
 };
 
 /**
@@ -178,10 +181,10 @@ fn._bindEvents = function(opt){
 };
 
 fn._initStyle = function(opt){
-	var STYLES = ["width", "height", "position", "top", "left", "margin-top", "margin-left", "backgroundColor"],
+	var STYLES = ["width", "height", "position", "top", "left", "margin-top", "margin-left", "backgroundColor", "display"],
     	styleOpt = {};
     $.each(STYLES, function(k, v) {
-    	styleOpt[v] = opt[v];
+    	opt[v] && (styleOpt[v] = opt[v]);
     });
 	this.$el.css(styleOpt);
 };
