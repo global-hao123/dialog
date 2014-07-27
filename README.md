@@ -73,3 +73,9 @@ Chrome 1+ / Firefox 10+ / Opera 9+ / IE 8+
 | close     | speed | 关闭（隐藏）dialog |
 | destroy     | - | 销毁dialog |
 | unBindDialog     | - | 提供显式解除绑定触发初始化事件的方法
+
+## Changelog
+* 2014/07/01
+    - 给每个dialog增加一个公共类名g-dialog，关闭按钮样式从close改成.g-dialog .close
+    - 修复modal dialog默认隐藏时，mask没有同步隐藏的bug
+    - 初始化参数增加customBodyClass，在该dialog对象出现时给body加指定的类，用来做自定义dialog和对应的mask

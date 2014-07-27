@@ -4,9 +4,12 @@
 	background: #000;
 	opacity: .5;
 }
-.close{
+.g-dialog .close{
 	cursor: pointer;
 	font-family: tahoma;
 	font-size: 17px;
 	float: right;
+}
+.freeze-scroll{
+	overflow: hidden;
 }

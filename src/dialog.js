@@ -23,6 +23,7 @@ var Dialog = function($el,opt){
 // class variables
 Dialog.counter = 0;
 Dialog.mask = null;
+Dialog.PCLASS = "g-dialog";
 
 var fn = Dialog.prototype;
 
@@ -41,13 +42,17 @@ fn._modalise = function(){
 			opacity: ".5"
 		});*/
 	}
-	if(Dialog.mask.is(":hidden")){
+	/*if(Dialog.mask.is(":hidden")){
 		Dialog.mask.show();
+	}*/
+	if(this.opt.display == "none"){
+		Dialog.mask.hide();
+	}else{
+		Dialog.mask.show();
+		// 禁止滚动
+		$("html").addClass("freeze-scroll");
 	}
-	// 禁止滚动
-	$("html,body").css({
-		"overflow": "hidden"
-	});
+
 };
 
 /**
@@ -65,7 +70,7 @@ fn._getElement = function($el){
 		$el ?
 		(function(){
 			// $el.html("<i class='close'>&times\;</i>");
-			$el.html(html);
+			$el.addClass(Dialog.PCLASS).html(html);
 			return $el;
 		})() :
 		(function(){
@@ -73,7 +78,7 @@ fn._getElement = function($el){
 	    	if($("#" + dialogId).length){
 	    		arguments.callee();
 	    	}else{
-	    		var $newDialog = $("<div id='" + dialogId + "'"+ (self.opt.customClass?"class='"+ self.opt.customClass +"'":"") + ">" + html + "</div>");
+	    		var $newDialog = $("<div id='" + dialogId + "' class='" + Dialog.PCLASS + (self.opt.customClass ? " " + self.opt.customClass : "") + "'>" + html + "</div>");
 	    		$newDialog.appendTo($("body"));
 	    		return $newDialog;
 	    	}
@@ -126,13 +131,11 @@ fn._draggable = function(){
  */
 fn.show = function(speed){
 	var self = this;
-
+	self.opt.customBodyClass && $("body").addClass(self.opt.customBodyClass);
 	if(self.opt.modal){
 		Dialog.mask.show();
 		// 恢复滚动
-		$("html,body").css({
-			"overflow": "hidden"
-		});
+		$("html").addClass("freeze-scroll");
 	}
 	self.$el.show(speed);
 	return self;
@@ -145,13 +148,11 @@ fn.show = function(speed){
  */
 fn.close = function(speed){
 	var self = this;
-
+	self.opt.customBodyClass && $("body").addClass(self.opt.customBodyClass);
 	if(self.opt.modal){
 		Dialog.mask.hide();
 		// 恢复滚动
-		$("html,body").css({
-			"overflow": "auto"
-		});
+		$("html").removeClass("freeze-scroll");
 	}
 	self.$el.hide(speed);
 	return self;
@@ -209,6 +210,7 @@ fn._init = function($el){
     // (debug-only)random background color
     opt.debug && (opt.backgroundColor = "RGB(" + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + " ," + Math.floor(Math.random()*255) + ")");
 
+    self.opt.customBodyClass && $("body").addClass(self.opt.customBodyClass);
     // init dialog styles
     self._initStyle(opt);
 
