@@ -6,9 +6,9 @@ I'm just a dialog, that's all.
 
 Chrome 1+ / Firefox 10+ / Opera 9+ / IE 8+
 
-## Feature
+## Demo
 
-- TODO ...
+- http://global-hao123.github.io/dialog
 
 ## Usage
 
