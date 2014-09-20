@@ -29,7 +29,10 @@
 				width: 60px;
 				text-align: right;
 			}
-
+            .g-dialog{
+                width: 100px;
+                height: 100px;
+            }
 		</style>
 	</head>
 	<body>
@@ -67,6 +70,7 @@
 		<a id="initLink" href="#">init a dialog</a>
 		</p>
 		<div id="dialog-1"></div>
+		<script>module = {};</script>
 		<script src="js/jquery-1.8.3.min.js"></script>
 		<script src="../src/dialog.js"></script>
 		<script src="js/drap.js"></script>
@@ -98,17 +102,24 @@
 				initOnce: 1,
                 customClass: "aaa",
 				onComplete: function(){
-					/*var self = this;
+					var self = this;
+				    self.update({"content": "<div class='content'>i'm gonna be destoried in 2 seconds</div>"});
 					setTimeout(function(){
 						self.destroy();
-						console.log("i'm destoried");
-					}, 2000);*/
+                        console.log("i'm destroried");
+					}, 2000);
 				}
 			}));
-			var testDialog = $("#dialog-1").dialog($.extend(getOpt(),{
+			/*var testDialog = $("#dialog-1").dialog($.extend(getOpt(),{
 				display: "none"
 			}));
-			testDialog.show(1000).close(1000).show(1000);
+			testDialog.show(1000).close(1000).show(1000);*/
+
+            var newDialog = new Dialog(null, {
+                debug: true,
+                display: "none"
+            });
+            newDialog.show(1000).close(1000).show(1000);
 
 		</script>
 	</body>
